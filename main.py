@@ -8,7 +8,8 @@ dp = Dispatcher(bot)
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    await message.answer(text = message.text.upper()) # написать сообщение text
+    if message.text.count(' ') >= 1:
+        await message.answer(text = message.text) # написать сообщение text
 
 
 if __name__ == '__main__':
