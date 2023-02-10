@@ -1,16 +1,15 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from aiogram import Bot, Dispatcher, executor, types
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+TOKEN_API = "6231684827:AAEv_LHi7QGXSrJYGtX11g9F0h4lcrgP-CA"  # токен для подключения к телеграм API
+
+bot = Bot(TOKEN_API)
+dp = Dispatcher(bot)
+
+@dp.message_handler()
+async def echo(message: types.Message):
+    await message.answer(text = message.text.upper()) # написать сообщение text
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    executor.start_polling(dp)
