@@ -3,30 +3,30 @@ from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButt
 
 from config import TOKEN_API
 
-bot = Bot(TOKEN_API)
-dp = Dispatcher(bot)
-
 HELP_COMMAND = """
 /help - список команд
 /start - начать работу с ботом
-/description - описание бота 
+/orange - отправляет фото апельсина
 """
+
+bot = Bot(TOKEN_API)
+dp = Dispatcher(bot)
+
+kb = ReplyKeyboardMarkup(resize_keyboard=True)
+b1 = KeyboardButton('/help')
+b2 = KeyboardButton('/orange')
+kb.add(b1).add(b2)
 
 async def on_startup(_):
     print('Бот запущен')
 
-kb = ReplyKeyboardMarkup(resize_keyboard=True)
-b1 = KeyboardButton('/help')
-b2 = KeyboardButton('/description')
-b3 = KeyboardButton('/❤️')
-kb.add(b1).add(b2).add(b3)
-
 @dp.message_handler(commands=['start'])
 async def start_command(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id,
-                           text='Бот запущен',
+                           text = 'Старт бота',
                            parse_mode='HTML',
                            reply_markup=kb)
+
 
 @dp.message_handler(commands=['help'])
 async def help_command(message: types.Message):
@@ -35,19 +35,10 @@ async def help_command(message: types.Message):
                            parse_mode='HTML',
                            reply_markup=kb)
 
-@dp.message_handler(commands=['description'])
-async def description_command(message: types.Message):
-    await bot.send_message(chat_id=message.from_user.id,
-                           text = 'Этот бот бла бла бла',
-                           parse_mode='HTML',
-                           reply_markup=kb)
-
-@dp.message_handler(commands=['❤️'])
-async def heart_command(message: types.Message):
-    await bot.send_sticker(message.from_user.id,
-                           sticker="CAACAgIAAxkBAAEH2_1j9kq9BmkpN4fA7r6zVDXPosv-ZAAC-g8AArxz8Ev5ju7492idci4E",
-                           reply_markup=kb)
-
+@dp.message_handler(commands=['orange'])
+async def orange_command(message: types.Message):
+    await bot.send_photo(chat_id=message.chat.id,
+                         photo='https://eksmo.ru/upload/iblock/2c4/1_min.jpg')
 
 if __name__ == "__main__":
     executor.start_polling(dp, on_startup=on_startup,skip_updates=True)

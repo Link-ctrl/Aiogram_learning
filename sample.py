@@ -13,7 +13,6 @@ dp = Dispatcher(bot)
 
 
 @dp.message_handler(commands=['start'])
-async def help_command(message: types.Message):
     await message.answer(text="бла бла бла")
     await message.delete()
 
