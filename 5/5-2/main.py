@@ -40,5 +40,6 @@ async def orange_command(message: types.Message):
     await bot.send_photo(chat_id=message.chat.id,
                          photo='https://eksmo.ru/upload/iblock/2c4/1_min.jpg')
 
+
 if __name__ == "__main__":
     executor.start_polling(dp, on_startup=on_startup,skip_updates=True)
