@@ -7,12 +7,12 @@ kb = ReplyKeyboardMarkup(resize_keyboard=True)
 b1 = KeyboardButton("/start")
 b2 = KeyboardButton("/help")
 b3 = KeyboardButton("/description")
-b4 = KeyboardButton('/pics')
-kb.add(b1, b2, b3, b4)
+kb.add(b1, b2, b3)
 
-kb2 = ReplyKeyboardMarkup(resize_keyboard=True)
-b_back = KeyboardButton("/back")
-kb2.add(b_back)
+kb_pics = ReplyKeyboardMarkup(resize_keyboard=True)
+bp1 = KeyboardButton(text='Рандом')
+bp2 = KeyboardButton(text='Главное меню')
+kb_pics.add(bp1, bp2)
 
 ikb = InlineKeyboardMarkup(row_width=2)
 ib1 = InlineKeyboardButton(text='',

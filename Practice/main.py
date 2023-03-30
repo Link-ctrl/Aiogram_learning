@@ -38,21 +38,23 @@
 7.  Реализуйте у бота возможность отправлять вам стикеры,
     эмодзи и рандомное местоположение.
 """
+import random
 from random import choice
 
 from aiogram import Bot, executor, Dispatcher, types
+from aiogram.dispatcher.filters import Text
 
 from config import TOKEN_API
 
-from keyboard import kb, kb2, ikb
+from keyboard import kb, kb_pics, ikb
 
 HELP_COMMAND = """
 /start - начать работу с ботом
 /help - список команд
 /description - описание бота
-/pics - присылает рандомное фото из списка
+random pic - присылает рандомное фото из списка
 """
-pics = ('https://avatars.dzeninfra.ru/get-zen_doc/1671806/pub_5e0e064fddfef600b0937786_5e0e067bdf944400b120fa1a/scale_1200',
+pics_arr = ('https://avatars.dzeninfra.ru/get-zen_doc/1671806/pub_5e0e064fddfef600b0937786_5e0e067bdf944400b120fa1a/scale_1200',
         'https://cdn.ren.tv/cache/960x540/media/img/a5/e7/a5e7b0666dcfb9a7698c62fde870ff57bba698ea.jpg',
         'https://memepedia.ru/wp-content/uploads/2019/10/chipseki-mem.png')
 
@@ -67,12 +69,15 @@ async def start_command(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id,
                            text='СТАРТ БОТА',
                            reply_markup=kb)
+    await message.delete()
 
 @dp.message_handler(commands=['help'])
 async def help_command(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id,
                            text=HELP_COMMAND,
                            reply_markup=kb)
+    await message.delete()
+
 
 @dp.message_handler(commands=['description'])
 async def description_command(message: types.Message):
@@ -80,11 +85,22 @@ async def description_command(message: types.Message):
                            text='бот делает что-то',
                            reply_markup=kb)
 
-@dp.message_handler(commands=['pics'])
-async def random_pics(message: types.Message):
-    await bot.send_photo(chat_id=message.from_user.id,
-                         photo=choice(pics),
-                         reply_markup=kb2)
+@dp.message_handler(Text(equals="Random photo"))
+async def open_kb_pics(message: types.Message):
+    await message.answer(text='Чтобы получить рандмное фото, нажми на кнопку',
+                         reply_markup=kb_pics)
+
+@dp.message_handler(Text(equals="Рандом"))
+async def send_random_pic(message: types.Message):
+    await bot.send_photo(chat_id=message.chat.id,
+                         photo=random.choice(pics_arr))
+
+
+@dp.message_handler(Text(equals="Главное меню"))
+async def open_kb(message: types.Message):
+    await message.answer(text='Добро пожаловать в главное меню',
+                         reply_markup=kb_pics)
+
 
 @dp.message_handler(commands=['back'])
 async def back_command(message: types.Message):
